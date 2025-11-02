@@ -1,0 +1,10 @@
+
+# Swift
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+# Firebase config
+GoogleService-Info.plist
