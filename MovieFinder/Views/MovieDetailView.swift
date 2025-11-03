@@ -1,17 +1,10 @@
 //
-//  MovieDetailContainerView.swift
+//  MovieDetailView.swift
 //  MovieFinder
 //
 //  Created by Saimur Rashid on 11/2/25.
 //
 
-
-//
-//  MovieDetailContainer.swift
-//  MovieFinder
-//
-//  Created by Saimur Rashid on 11/2/25.
-//
 
 import SwiftUI
 
@@ -43,5 +36,5 @@ struct MovieDetailView: View {
 }
 
 #Preview {
-    MovieDetailContainer(imdbID: "tt1375666")
+    MovieDetailView(imdbID: "tt1375666")
 }

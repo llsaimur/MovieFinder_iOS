@@ -1,3 +1,11 @@
+//
+//  Movie.swift
+//  MovieFinder
+//
+//  Created by Saimur Rashid on 11/2/25.
+//
+
+
 import Foundation
 
 struct Movie: Codable, Identifiable {

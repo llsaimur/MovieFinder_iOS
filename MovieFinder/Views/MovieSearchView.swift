@@ -1,18 +1,19 @@
 //
-//  SearchView.swift
+//  MovieSearchView.swift
 //  MovieFinder
 //
 //  Created by Saimur Rashid on 11/2/25.
 //
 
+
 import SwiftUI
 
 struct MovieSearchView: View {
-    @EnvironmentObject var omdb: OMDbService
+    @StateObject private var viewModel = MovieListViewModel()
     @State private var query: String = ""
     @FocusState private var isFocused: Bool
     @State private var didAttemptSearch: Bool = false
-
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
@@ -24,7 +25,7 @@ struct MovieSearchView: View {
                     .textFieldStyle(.roundedBorder)
                     .focused($isFocused)
                     .submitLabel(.search)
-
+                    
                     Button("Search") {
                         Task { await performSearch() }
                         isFocused = false
@@ -33,39 +34,35 @@ struct MovieSearchView: View {
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 10)
-
+                
                 // Main content
-                if omdb.isLoading {
-                    // Loading view
+                if viewModel.isLoading {
                     VStack {
                         Spacer()
                         ProgressView("Searching...")
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                } else if let error = omdb.errorMessage {
-                    // Error view
+                    
+                } else if let error = viewModel.errorMessage {
                     VStack(spacing: 12) {
                         Spacer()
                         Text(error)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.red)
-
+                        
                         if !query.isEmpty {
                             Button("Try again") {
                                 Task { await performSearch() }
                             }
                             .buttonStyle(.bordered)
                         }
-
                         Spacer()
                     }
                     .padding()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                } else if omdb.searchResults.isEmpty {
-                    // Placeholder / empty results
+                    
+                } else if viewModel.movies.isEmpty {
                     VStack(spacing: 12) {
                         Spacer()
                         if !didAttemptSearch {
@@ -78,19 +75,18 @@ struct MovieSearchView: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-
+                    
                 } else {
-                    // Results list
-                    MovieListView(movies: omdb.searchResults)
+                    MovieListView(viewModel: viewModel)
                 }
             }
             .navigationTitle("Search")
-            .animation(.default, value: omdb.isLoading)
+            .animation(.default, value: viewModel.isLoading)
         }
     }
-
+    
     private func performSearch() async {
         didAttemptSearch = true
-        await omdb.search(title: query)
+        await viewModel.searchMovies(query: query)
     }
 }

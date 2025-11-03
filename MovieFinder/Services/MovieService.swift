@@ -1,5 +1,5 @@
 //
-//  OMDbService.swift
+//  MovieService.swift
 //  MovieFinder
 //
 //  Created by Saimur Rashid on 11/2/25.

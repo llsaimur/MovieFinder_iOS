@@ -20,11 +20,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct MovieFinderApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject private var movieService = MovieService()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MovieSearchView()
+                .environmentObject(movieService)
         }
     }
 }

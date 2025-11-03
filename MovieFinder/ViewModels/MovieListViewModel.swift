@@ -1,16 +1,22 @@
-import Foundation
-import SwiftUI
+//
+//  MovieListViewModel.swift
+//  MovieFinder
+//
+//  Created by Saimur Rashid on 11/2/25.
+//
 
-@MainActor
+
+import Foundation
+
 class MovieListViewModel: ObservableObject {
-    @Published var movies: [MovieSummary] = []
+    @Published var movies: [Movie] = []
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     
-    private let omdbService: OMDbService
+    private let movieService: MovieService
     
-    init(omdbService: OMDbService = OMDbService()) {
-        self.omdbService = omdbService
+    init(movieService: MovieService = MovieService()) {
+        self.movieService = movieService
     }
     
     func searchMovies(query: String) async {
@@ -24,11 +30,10 @@ class MovieListViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        await omdbService.search(title: trimmed)
-        
-        // Update view model state from service
-        movies = omdbService.searchResults
-        errorMessage = omdbService.errorMessage
-        isLoading = omdbService.isLoading
+        await movieService.search(title: trimmed)
+
+        movies = movieService.searchResults
+        errorMessage = movieService.errorMessage
+        isLoading = movieService.isLoading
     }
 }
