@@ -20,12 +20,20 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct MovieFinderApp: App {
+    // MARK: - App Services
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var movieService = MovieService()
+    @StateObject private var auth = AuthService.shared
 
     var body: some Scene {
         WindowGroup {
-            MovieSearchView()
-                .environmentObject(movieService)
+            if auth.currentUser != nil {
+                MainView()
+                    .environmentObject(movieService)
+            } else {
+                AuthGate()
+                    .environmentObject(movieService)
+            }
         }
     }
 }
