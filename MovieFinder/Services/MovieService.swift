@@ -62,4 +62,23 @@ class MovieService: ObservableObject {
 
         isLoading = false
     }
+    
+    func fetchMovieDetail(imdbID: String) async -> MovieDetail? {
+        guard let url = URL(string: "\(baseURL)?apikey=\(apiKey)&i=\(imdbID)&plot=full") else {
+            print("Invalid detail URL")
+            return nil
+        }
+        
+        do {
+            let (data, response) = try await URLSession.shared.data(from: url)
+            guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+                throw URLError(.badServerResponse)
+            }
+            let detail = try JSONDecoder().decode(MovieDetail.self, from: data)
+            return detail
+        } catch {
+            print("Error fetching movie detail:", error.localizedDescription)
+            return nil
+        }
+    }
 }
