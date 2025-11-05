@@ -1,4 +1,4 @@
-# 🎬 MovieFinder
+# MovieFinder
 
 A modern **SwiftUI + Firebase** iOS app that lets users **search for movies**, view details, and save their favorites using the **OMDb API**.  
 Built as part of a full-stack mobile development project demonstrating **SwiftUI architecture**, **Firebase Authentication**, **Firestore persistence**, and **API integration**.
