@@ -13,9 +13,13 @@ struct MainView: View {
         TabView {
             MovieSearchView()
                 .tabItem { Label("Search", systemImage: "magnifyingglass") }
-
+            
+            FavoriteView()
+                .tabItem { Label("Favorites", systemImage: "heart.fill") }
+            
             ProfileView()
                 .tabItem { Label("Profile", systemImage: "person.circle") }
         }
+
     }
 }
