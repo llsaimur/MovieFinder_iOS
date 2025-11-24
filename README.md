@@ -130,28 +130,37 @@ OMDB_API_KEY = your_api_key_here
 
 ## Screenshots
 
-## Screenshots
+<table>
+  <tr>
+    <td>
+      <img src="MovieFinder/Screenshots/Login.png" alt="Login" width="250"/>
+      <p align="center">Login to your account.</p>
+    </td>
+    <td>
+      <img src="MovieFinder/Screenshots/Register.png" alt="Register" width="250"/>
+      <p align="center">Create a new account.</p>
+    </td>
+    <td>
+     <img src="MovieFinder/Screenshots/ProfileView.png" alt="Profile" width="250"/>
+     <p align="center">Manage your account and sign out.</p>
+    </td>
+  </tr>
 
-![Login](Screenshots/Login.png)
-*Login to your account.*
-
-![Register](Screenshots/Register.png)
-*Create a new account.*
-
-![Movie Search](Screenshots/MovieSearchView.png)
-*Search for movies and browse results.*
-
-![Movie Detail](Screenshots/MovieDetailView.png)
-*View detailed information for a selected movie.*
-
-![Favorites](Screenshots/FavoritesView.png)
-*Manage your favorite movies synced with Firebase.*
-
-![Add to Favorites](Screenshots/AddFavoritesView.png)
-*Add or remove movies from your favorites.*
-
-![Profile](Screenshots/ProfileView.png)
-*Manage your account and sign out.*
+  <tr>
+   <td>
+      <img src="MovieFinder/Screenshots/MovieSearchView.png" alt="Movie Search" width="250"/>
+      <p align="center">Search for movies and browse results.</p>
+    </td>
+    <td>
+      <img src="MovieFinder/Screenshots/MovieDetailView.png" alt="Movie Detail" width="250"/>
+      <p align="center">View detailed information for a selected movie.</p>
+    </td>
+    <td>
+      <img src="MovieFinder/Screenshots/FavoritesView.png" alt="Favorites" width="250"/>
+      <p align="center">Manage your favorite movies synced with Firebase.</p>
+    </td>
+  </tr>
+</table>
 
 ---
 
