@@ -18,19 +18,23 @@ struct MovieSearchView: View {
         NavigationView {
             VStack(spacing: 0) {
                 // Search bar
-                HStack(spacing: 8) {
-                    TextField("Search movies", text: $query, onCommit: {
-                        Task { await performSearch() }
-                    })
-                    .textFieldStyle(.roundedBorder)
-                    .focused($isFocused)
-                    .submitLabel(.search)
-                    
-                    Button("Search") {
-                        Task { await performSearch() }
-                        isFocused = false
+                HStack {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+
+                        TextField("Search movies", text: $query)
+                            .textFieldStyle(.plain)
+                            .submitLabel(.search)
                     }
-                    .buttonStyle(.borderedProminent)
+                    .padding(10)
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(12)
+
+                    Button("Find") {
+                        Task { await performSearch() }
+                    }
+                    .padding(.horizontal, 8)
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 10)

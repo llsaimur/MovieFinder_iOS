@@ -8,8 +8,9 @@
 
 import SwiftUI
 
-struct FavoriteView: View {
+import SwiftUI
 
+struct FavoriteView: View {
     @StateObject private var favManager = FavoritesManager.shared
 
     var body: some View {
@@ -19,32 +20,17 @@ struct FavoriteView: View {
                     Text("You don't have any favorites yet.")
                         .foregroundColor(.gray)
                         .italic()
+                        .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     ForEach(favManager.favorites) { movie in
-                        NavigationLink {
-                            MovieDetailView(imdbID: movie.imdbID)
-                        } label: {
-                            HStack {
-                                AsyncImage(url: URL(string: movie.poster)) { img in
-                                    img.resizable()
-                                } placeholder: {
-                                    Color.gray.opacity(0.3)
-                                }
-                                .frame(width: 55, height: 85)
-                                .cornerRadius(6)
-
-                                VStack(alignment: .leading) {
-                                    Text(movie.title)
-                                    Text(movie.year)
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
+                        NavigationLink(destination: MovieDetailView(imdbID: movie.imdbID)) {
+                            MovieRowView(movie: movie)
                         }
                     }
                     .onDelete(perform: delete)
                 }
             }
+            .listStyle(.plain)
             .navigationTitle("Favorites")
         }
     }

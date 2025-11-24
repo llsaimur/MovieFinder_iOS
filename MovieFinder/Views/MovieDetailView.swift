@@ -11,41 +11,55 @@ struct MovieDetailView: View {
     @StateObject private var viewModel = MovieDetailViewModel()
     @StateObject private var favoritesManager = FavoritesManager.shared
     let imdbID: String
+    
+    @State private var showAlert = false
+    @State private var alertMessage = ""
 
     var body: some View {
         VStack {
             if viewModel.isLoading {
                 Spacer()
-                ProgressView("Loading movie info...")
+                ProgressView("Loading movie info…")
                 Spacer()
+
             } else if let error = viewModel.errorMessage {
                 Spacer()
                 Text(error)
                     .foregroundColor(.red)
                     .multilineTextAlignment(.center)
+
                 Button("Retry") {
                     Task { await viewModel.fetchMovieDetail(imdbID: imdbID) }
                 }
                 .padding(.top, 8)
                 Spacer()
+
             } else if let movie = viewModel.movieDetail {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(spacing: 20) {
+
                         // Poster
-                        AsyncImage(url: URL(string: movie.poster)) { image in
-                            image
-                                .resizable()
+                        AsyncImage(url: URL(string: movie.poster)) { img in
+                            img.resizable()
                                 .scaledToFit()
-                                .cornerRadius(8)
+                                .cornerRadius(12)
+                                .shadow(radius: 4)
                         } placeholder: {
                             Rectangle()
                                 .fill(Color.gray.opacity(0.3))
-                                .frame(height: 250)
-                                .cornerRadius(8)
+                                .frame(height: 260)
+                                .cornerRadius(12)
                         }
 
-                        // Favorite
+                        // Title
                         HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(movie.title)
+                                    .font(.title2).bold()
+                                Text(movie.year)
+                                    .foregroundColor(.secondary)
+                            }
+
                             Spacer()
 
                             let movieObj = Movie(
@@ -56,52 +70,54 @@ struct MovieDetailView: View {
                                 poster: movie.poster
                             )
 
+                            // Add/Remove favorites
                             Button {
                                 if favoritesManager.isFavorite(movieObj) {
                                     favoritesManager.remove(movieObj)
+                                    alertMessage = "Removed \"\(movie.title)\" from your favorites."
                                 } else {
                                     favoritesManager.add(movieObj)
+                                    alertMessage = "Added \"\(movie.title)\" to your favorites!"
                                 }
+                                showAlert = true
                             } label: {
                                 Image(systemName: favoritesManager.isFavorite(movieObj) ? "heart.fill" : "heart")
-                                    .foregroundColor(.red)
                                     .font(.title2)
+                                    .foregroundColor(.red)
                             }
                         }
-
-                        // Movie Info
-                        Text(movie.title)
-                            .font(.title2)
-                            .bold()
-                        Text("Year: \(movie.year)")
-                        Text("Genre: \(movie.genre)")
-                        Text("Plot: \(movie.plot)")
-                            .padding(.top, 4)
-
-                        // Director & Cast
-                        Text("Director: \(movie.director)")
-                        if let actors = movie.actors {
-                            Text("Actors: \(actors)")
-                        }
-
-                        // Extra info
-                        VStack(alignment: .leading, spacing: 4) {
-                            if let rating = movie.imdbRating { Text("IMDb Rating: \(rating)") }
-                            if let awards = movie.awards, !awards.isEmpty, awards != "N/A" {
-                                Text("Awards: \(awards)")
+                        .padding(.horizontal)
+                        
+                        // Movie details
+                        VStack(alignment: .leading){
+                            
+                            SectionCard(title: "Plot", text: movie.plot, icon: "doc.text")
+                            
+                            if let actors = movie.actors {
+                                SectionCard(title: "Cast", text: actors, icon: "person.3")
                             }
-                        }
-                        .padding(.top, 6)
+                            
+                            SectionCard(title: "Director", text: movie.director, icon: "person.crop.rectangle")
+                            SectionCard(title: "Genre", text: movie.genre, icon: "tag")
 
-                        // Website
-                        if let website = movie.website, website != "N/A" {
-                            Link("Official Website", destination: URL(string: website)!)
-                                .foregroundColor(.blue)
-                                .padding(.top, 6)
+                            if let rating = movie.imdbRating {
+                                SectionCard(title: "IMDb Rating", text: rating, icon: "star.fill")
+                            }
+
+                            if let awards = movie.awards, awards != "N/A" {
+                                SectionCard(title: "Awards", text: awards, icon: "rosette")
+                            }
+
+                            if let website = movie.website, website != "N/A" {
+                                Link("Official Website", destination: URL(string: website)!)
+                                    .font(.headline)
+                                    .padding(.horizontal)
+                            }
                         }
                     }
-                    .padding()
+                    .padding(.bottom)
                 }
+
             } else {
                 Spacer()
                 Text("No movie details found.")
@@ -111,9 +127,16 @@ struct MovieDetailView: View {
         }
         .navigationTitle("Movie Details")
         .navigationBarTitleDisplayMode(.inline)
+        .alert(isPresented: $showAlert) {
+                    Alert(title: Text("Favorites"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                }
         .task {
             await viewModel.fetchMovieDetail(imdbID: imdbID)
         }
     }
 }
+
+
+
+
 

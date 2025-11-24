@@ -12,7 +12,7 @@ struct AuthGate: View {
     @State private var showLogin = true
 
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             Picker("", selection: $showLogin) {
                 Text("Login").tag(true)
                 Text("Sign Up").tag(false)
