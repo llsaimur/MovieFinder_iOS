@@ -36,7 +36,7 @@ struct MovieSearchView: View {
                 .padding(.vertical, 10)
                 
                 // Main content
-                if viewModel.isLoading {
+                if viewModel.isLoading && viewModel.movies.isEmpty {
                     VStack {
                         Spacer()
                         ProgressView("Searching...")
@@ -44,7 +44,7 @@ struct MovieSearchView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     
-                } else if let error = viewModel.errorMessage {
+                } else if let error = viewModel.errorMessage, viewModel.movies.isEmpty {
                     VStack(spacing: 12) {
                         Spacer()
                         Text(error)
@@ -87,6 +87,11 @@ struct MovieSearchView: View {
     
     private func performSearch() async {
         didAttemptSearch = true
+        
+        if let cached = CacheManager.shared.getSearchResults(for: query), !cached.isEmpty {
+            viewModel.movies = cached
+        }
+        
         await viewModel.searchMovies(query: query)
     }
 }

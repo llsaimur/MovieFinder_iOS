@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Movie: Codable, Identifiable {
+struct Movie: Codable, Identifiable, Equatable {
     var id: String { imdbID }
 
     let title: String
