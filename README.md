@@ -130,17 +130,28 @@ OMDB_API_KEY = your_api_key_here
 
 ## Screenshots
 
-TBD
+## Screenshots
+
+![Login](Screenshots/Login.png)
+*Login to your account.*
+
+![Register](Screenshots/Register.png)
+*Create a new account.*
+
+![Movie Search](Screenshots/MovieSearchView.png)
 *Search for movies and browse results.*
 
-TBD
+![Movie Detail](Screenshots/MovieDetailView.png)
 *View detailed information for a selected movie.*
 
-TBD
+![Favorites](Screenshots/FavoritesView.png)
 *Manage your favorite movies synced with Firebase.*
 
-TBD
-*Manage authentication and sign out.*
+![Add to Favorites](Screenshots/AddFavoritesView.png)
+*Add or remove movies from your favorites.*
+
+![Profile](Screenshots/ProfileView.png)
+*Manage your account and sign out.*
 
 ---
 
